@@ -3,6 +3,7 @@ from itertools import chain
 import re
 
 object_counter = 0
+tex_labels = set()
 
 
 # We use this counter to number the protocol steps. The counter can be manually set to a different value.
@@ -161,6 +162,10 @@ class ProtocolStep(ProtocolObject):
         if self.skip_number or not hasattr(self, '_counter'):
             return ''
         if hasattr(self, 'id'):
+            global tex_labels
+            if self.id in tex_labels:
+                raise Exception(f"TeX label (i.e., id) '{self.id}' appears more than once!")
+            tex_labels.add(self.id)
             t = self.id
         else:
             t = self.annexid
