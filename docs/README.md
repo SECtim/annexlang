@@ -245,6 +245,9 @@ The arrow heads of responses' arrows are empty (as opposed to the filled arrow h
   note_left: ''
   note_right: ''
   note_style: ''
+  # num_lines: <integer>  # When dealing with multiline labels, setting this to the number of
+                          # lines of the label (as they appear in the final PDF) fixes issues
+                          # with the calculation of an !action's height.
 ```
 
 ![](action.png)

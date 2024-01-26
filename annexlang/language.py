@@ -236,6 +236,8 @@ class Action(ProtocolStep):
 
     @property
     def height(self):
+        if hasattr(self, 'num_lines'):
+            return f"{int(self.num_lines)}\\baselineskip", "center"
         h = 1 + 2 * len(str(self.label).split("\\\\"))
         return f"{h}ex", "center"
 
