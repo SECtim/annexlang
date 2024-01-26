@@ -270,6 +270,22 @@ The arrow heads of responses' arrows are empty (as opposed to the filled arrow h
 ![](script_action.png)
 
 
+#### Trigger Message
+
+For drawing messages coming from the environment, i.e., not from one of the parties.
+
+```yaml
+- !trigger
+  party: *browser  # Required
+  id: 'trigger-msg'
+  origin: 'left'  # Can be 'left', 'right', a party-reference like *attacker, or a TikZ node name
+  text_above: ''
+  text_below: ''
+  skip_number: false
+  draw_contour: true
+  style: ''
+```
+
 ### Special Protocol Steps
 
 #### Parallel & Serial

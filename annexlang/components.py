@@ -355,6 +355,10 @@ class Protocol(Serial):
         for step in self.walk():
             if getattr(step, 'lifeline_style', False):
                 step.apply_lifeline_style()
+        # pass options to children
+        for step in self.walk():
+            if not hasattr(step, 'options'):
+                step.options = options
 
 
     @property

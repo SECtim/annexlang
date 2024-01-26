@@ -64,6 +64,7 @@ class StyleDefault(AnnexStyle):
     annex_script_action_box/.style={annex_action,anchor=center},
     annex_script_action_arrow/.style={->,line},
     annex_script_action_arrow_reversed/.style={<-,line},
+    annex_trigger_msg/.style={annex_message},
     annex_open_window_start_party_box/.style={annex_start_party_box},
     annex_open_window_start_party_arrow/.style={->,line,dashed},
     annex_close_window_end_party_box/.style={annex_end_party_box},

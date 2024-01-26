@@ -1,4 +1,4 @@
-from .components import ProtocolStep
+from .components import ProtocolStep, Party
 
 
 class GenericMessage(ProtocolStep):
@@ -296,7 +296,32 @@ class ScriptAction(Action):
         yield self.party
         yield self.src
         yield self.dest
-        
+
+class TriggerMessage(ProtocolStep):
+    yaml_tag = '!trigger'
+    origin = 'left'
+    text_above = ''
+    text_below = ''
+    id_above = True
+
+    def tikz_arrows(self):
+        dest = self.get_pos(self.party.column, self.line)
+        colsep = self.protocol.options['colsep']
+        if self.origin == "left":
+            src = f"$({dest})-0.5*({colsep},0)$"
+        elif self.origin == "right":
+            src = f"$({dest})+0.5*({colsep},0)$"
+        elif isinstance(self.origin, Party):
+            src = self.get_pos(self.origin.column, self.line)
+        else:
+            src = self.origin
+        return fr"""%% draw TRIGGER message
+        \draw[annex_trigger_msg{self.tikz_extra_style}] ({src}) to {self.tikz_above} {self.tikz_below} ({dest});"""
+
+    @property
+    def height(self):
+        return "\\baselineskip+1ex", "center"
+
 
 class EndParty(ProtocolStep):
     yaml_tag = '!end-party'
