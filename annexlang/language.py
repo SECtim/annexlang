@@ -52,13 +52,25 @@ class GenericMessage(ProtocolStep):
 
     @property
     def height(self):
-        if len(self.lines_above) and len(self.lines_below):
-            yshift = f'{1 + 2*len(self.lines_above)}ex'
-            return "2ex" + ("+2ex" * len(self.lines_above)) + ("+1.6ex" * len(self.lines_below)), f"north,yshift={yshift}"
-        elif len(self.lines_above):
-            return "2ex" + ("+2ex" * len(self.lines_above)), "south,yshift=-1ex"
-        elif len(self.lines_below):
-            return "2ex" + ("+1.6ex" * len(self.lines_below)), "north,yshift=1ex"
+        # Calculate the necessary space for captions above & below the arrow(s)
+        above = fr'{max(len(self.lines_above), 1)}\baselineskip'  # max() for cases where we only have the id (i.e., step counter)
+        if hasattr(self, 'num_lines_above'):
+            above = fr"{getattr(self, 'num_lines_above'):.2f}\baselineskip"
+        below = fr'{len(self.lines_below)}\baselineskip'
+        if hasattr(self, 'num_lines_below'):
+            below = fr"{getattr(self, 'num_lines_below'):.2f}\baselineskip"
+        # Height of arrow + spacing around the arrow
+        spacing = '2.6pt'  # with "Latex" arrow heads, this allows for just enough space to include the arrow head
+
+        has_text_above = len(self.tikz_above) > 0
+        has_text_below = len(self.tikz_below) > 0
+
+        if has_text_above and has_text_below:
+            return f"{above}+{spacing}+{below}", f"north,yshift={above}"
+        elif has_text_above:
+            return f"{above}+{spacing}", f"north,yshift={above}"
+        elif has_text_below:
+            return f"{below}+{spacing}", f"north,yshift={0}pt"
         else:
             return "1ex", "center"
 
@@ -236,10 +248,16 @@ class Action(ProtocolStep):
 
     @property
     def height(self):
-        if hasattr(self, 'num_lines'):
-            return f"{int(self.num_lines)}\\baselineskip", "center"
-        h = 1 + 2 * len(str(self.label).split("\\\\"))
-        return f"{h}ex", "center"
+        num_lines = getattr(self, 'num_lines', len(str(self.label).split('\\\\')))
+        # If we only have a single line AND we print a tex id (i.e., step number), then the total height is increased
+        # due to the inner sep of the step number node - however, the exact look of that step number node is part of the
+        # user's styling and we simply do not know how much the step number node affects the height. So we assume a
+        # sensible default: +2pt in total.
+        if num_lines == 1 and len(self.tex_id) > 0:
+            single_line_add = '2pt'
+        else:
+            single_line_add = '0pt'
+        return f"{int(num_lines)}\\baselineskip+{single_line_add}", "center"
 
     
 class ScriptAction(Action):
@@ -322,7 +340,7 @@ class TriggerMessage(ProtocolStep):
 
     @property
     def height(self):
-        return "\\baselineskip+1ex", "center"
+        return "\\baselineskip+0ex", "south"
 
 
 class EndParty(ProtocolStep):

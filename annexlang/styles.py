@@ -10,6 +10,7 @@ class AnnexStyle(yaml.YAMLObject):
     def get_style(self):
         placeholders = self.default_placeholders
         placeholders.update(self.placeholders)
+        self.placeholders = placeholders
         style = getattr(self, 'style', '')
         # Check for missing replacements (to avoid confusing TeX errors)
         for occurence in re.finditer(r'{\|([^|]*)\|}', style):

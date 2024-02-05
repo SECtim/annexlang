@@ -22,6 +22,7 @@ This dictionary may contain the following keys:
    - E.g., `\setcounter{protostep}{%d}\protostep{%s}` with an appropriately defined macro `\protostep` which uses the `protostep` counter and the given string to show the step number in a TikZ node and assign the given string as TikZ node name to that circle.
  - `colsep`: LaTeX distance between parties' lifelines, e.g., `0.2\textwidth`
  - `rowsep`: Like `colsep`, but for (additional) vertical distance between steps
+ - `fontsize`: This LaTeX code is executed right at the beginning of the tikzpicture and should be a font size selector such as `\tiny`. Should match the font size used in all node styles; this setting affects height calculations. If not given explicitly, the value is inferred by lookig for a placeholder 'default_font_size' in the styles; if none is found, `\tiny` is used instead.
  - `styles`: A list of style definitions, using the following elements (each one is a dictionary). Each style may contain placeholders (which MUST be enclosed in `{||}`) like `{|default_font_size|}`. These placeholders are replaced by values given in a dictionary `style_definition.placeholders`, c.f. example below.
    - `!style-default {}`: The default style provided by annex, contains the following placeholders (all with default values):
      - `default_font_size`: Font size for almost all text, default `\tiny`. Used in TikZ nodes' `font=` style option.
@@ -39,6 +40,7 @@ options:
   enumerate: '\setcounter{protostep}{%d}\protostep{%s} '
   colsep: 0.2\textwidth
   rowsep: 0ex
+  fontsize: \tiny  # Optional, can also be inferred from default_font_size placeholder if present in one of the styles.
   styles:
     - !style-default
       placeholders:  # Optional, default style has default values for all placeholders

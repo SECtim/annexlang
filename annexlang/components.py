@@ -113,8 +113,12 @@ class ProtocolStep(ProtocolObject):
         if not self.text_above and (not getattr(self, 'id_above', True) or not self.tex_id):
             return ""
         else:
-            return r"""node [%s,above=2.6pt,anchor=base,pin={[pin distance=-8pt,pin edge={draw=none},annex_debug]90:%s}](%s){%s%s}""" % (
+            above = '2.6pt'
+            if hasattr(self, 'num_lines_above'):
+                above += fr"+{0.5*(getattr(self, 'num_lines_above')-1):.2f}\baselineskip"
+            return r"""node [%s,above=%s,anchor=base,pin={[pin distance=-8pt,pin edge={draw=none},annex_debug]90:%s}](%s){%s%s}""" % (
                 self.text_style,
+                above,
                 self.id.replace("_", r"\_") if getattr(self, 'id', False) else '',
                 self.create_affecting_node_name(parties=[]),
                 self.tex_id if getattr(self, 'id_above', False) else '',
@@ -126,18 +130,13 @@ class ProtocolStep(ProtocolObject):
         if not self.text_below:
             return ""
         else:
-            line_counter = 0
-            out = ""
-            for line in self.lines_below:
-                pos = "1.5pt" + ("+8pt" * line_counter)
-                out += r"""node [anchor=north,inner sep=0pt,%s,below=%s](%s){%s} """ % (
-                    self.text_style,
-                    pos,
-                    self.create_affecting_node_name(parties=[]),
-                    self.contour(line),
-                )
-                line_counter += 1
-            return out
+            return r"""node[%s,below=%s,anchor=north,inner sep=0pt](%s){%s}""" % (
+                self.text_style,
+                '2.5pt',
+                self.create_affecting_node_name(parties=[]),
+                self.contour(r'\\'.join(self.lines_below))
+            )
+
 
     def create_affecting_node_name(self, parties=None):
         name = f"{self.annexid}_{self.node_name_counter}"

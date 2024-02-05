@@ -13,6 +13,16 @@ class TikzPicture:
         self.protocol = annexfile['protocol']
         self.protocol.init(self.options)
 
+    def _get_font_size(self):
+        if 'fontsize' in self.options:
+            return self.options['fontsize']
+        for style in self.options['styles']:
+            style.get_style()  # To populare placeholders
+            if 'default_font_size' in style.placeholders:
+                return style.placeholders['default_font_size']
+        print("WARNING: No 'fontsize' in options and no style with 'default_font_size'. Using default '\\tiny'.")
+        return r'\tiny'  # Default style font size
+
     def dump(self, f):
         self.dump_header(f)
         self.dump_matrix(f)
@@ -24,13 +34,14 @@ class TikzPicture:
         style_string = ','.join(
             s.get_style() for s in self.options['styles']
         )
+        font_size = self._get_font_size()
         f.write(r"""
-        \begin{tikzpicture}[%s]
+        \begin{tikzpicture}[%s]%s
         \pgfdeclarelayer{arrows}
         \pgfdeclarelayer{groups}
         \pgfdeclarelayer{markers}
         \pgfsetlayers{groups,arrows,main,markers}
-        """ % style_string)
+        """ % (style_string, font_size))
 
     def dump_matrix(self, f):
         line_offset = 1 if self.protocol.has_groups else 0
