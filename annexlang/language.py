@@ -381,6 +381,9 @@ class EndParty(ProtocolStep):
             height = '1.7em'
         else:
             height = fr"{num_lines}\baselineskip+3mm"  # 3mm to account for inner sep
+        # End-party boxes are scaled to 0.7 by the default styles
+        if isinstance(self, EndParty):
+            height = f"0.7*({height})"
         return height, "center"
 
 
