@@ -37,11 +37,12 @@ class TikzPicture:
         font_size = self._get_font_size()
         f.write(r"""
         \begin{tikzpicture}[%s]%s
+        \def\colsep{%s}
         \pgfdeclarelayer{arrows}
         \pgfdeclarelayer{groups}
         \pgfdeclarelayer{markers}
         \pgfsetlayers{groups,arrows,main,markers}
-        """ % (style_string, font_size))
+        """ % (style_string, font_size, self.options['colsep']))
 
     def dump_matrix(self, f):
         line_offset = 1 if self.protocol.has_groups else 0
