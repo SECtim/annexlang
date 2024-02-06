@@ -62,7 +62,7 @@ class GenericMessage(ProtocolStep):
         # Height of arrow + spacing around the arrow
         spacing = '2.6pt'  # with "Latex" arrow heads, this allows for just enough space to include the arrow head
 
-        has_text_above = len(self.tikz_above) > 0
+        has_text_above = len(self.tikz_above) > 0  # We don't want to repeat the logic for, e.g., drawing step counters (or not)
         has_text_below = len(self.tikz_below) > 0
 
         if has_text_above and has_text_below:
@@ -367,7 +367,15 @@ class EndParty(ProtocolStep):
 
     @property
     def height(self):
-        return "5ex", "center"
+        lines = str(self.party.name).split('\\\\')
+        num_lines = int(getattr(self, 'num_lines', len(lines)))
+        # From default style for start party box: minimum height=1.7em,inner sep=1.5mm
+        # Since one line is usually < 1.7em and two lines are usually > 1.7em, we distinguish accordingly:
+        if num_lines < 2:
+            height = '1.7em'
+        else:
+            height = fr"{num_lines}\baselineskip+3mm"  # 3mm to account for inner sep
+        return height, "center"
 
 
 class StartParty(EndParty):
