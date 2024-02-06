@@ -144,6 +144,12 @@ class HTTPRequestResponse(HTTPRequest):
         \draw[annex_{self.type_above},transform canvas={{yshift=0.25ex}}{self.tikz_extra_style}] ({src}) to {self.tikz_above} ({dest});
         \draw[annex_{self.type_below},transform canvas={{yshift=-0.25ex}}{self.tikz_extra_style}] ({dest}) to {self.tikz_below} ({src});"""
 
+    @property
+    def height(self):
+        # Adjust for yshift of lower arrow
+        regular_height, valign = super().height
+        return regular_height + "+0.25ex", valign
+
 
 class XHRRequestResponse(HTTPRequestResponse):
     yaml_tag = '!xhr-request-response'
