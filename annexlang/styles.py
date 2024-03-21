@@ -60,7 +60,7 @@ class StyleDefault(AnnexStyle):
     annex_xhr_response/.style={-Latex[open],line,draw=blue},
     annex_websocket/.style={-Latex,draw=red},
     annex_postmessage/.style={->,line,dashed,draw=red},
-    annex_action/.style={fill=white,inner sep=0ex,minimum height=1.5em},
+    annex_action/.style={fill=white,inner sep=0ex,inner ysep=1pt,minimum height=1.5em},
     annex_open_window/.style={->,line,dashed},
     annex_script_action_box/.style={annex_action,anchor=center},
     annex_script_action_arrow/.style={->,line},
