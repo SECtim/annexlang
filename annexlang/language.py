@@ -129,7 +129,24 @@ class Websocket(HTTPRequest):
         super()._init(*args, **kwargs)
         self.text_above = "WebSocket"
         self.text_below = str(self.parameters)
-    
+
+
+class HTTPRedirect(HTTPResponse):
+    yaml_tag = '!http-redirect'
+    redir_type = "http_redirect"
+
+    def tikz_arrows(self):
+        response = super().tikz_arrows()
+        # Add redirect arrow
+        if self.src.column < self.dest.column:
+            arrow_pos = 'right'
+        else:
+            arrow_pos = 'left'
+        src = self.get_pos(self.dest.column, self.line)
+        dest = self.get_pos(self.dest.column, self.line + 1)
+        return response + fr"""%% draw {self.type}
+        \draw[annex_{self.redir_type}_{arrow_pos}{self.tikz_extra_style}] ({src}) to ({dest});"""
+
 
 class HTTPRequestResponse(HTTPRequest):
     yaml_tag = '!http-request-response'

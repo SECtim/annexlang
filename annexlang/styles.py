@@ -56,6 +56,8 @@ class StyleDefault(AnnexStyle):
     annex_out_of_scope_message/.style={-Latex,line,dashed,draw=purple},
     annex_http_request/.style={-Latex,line,draw=purple},
     annex_http_response/.style={-Latex[open],line,draw=purple},
+    annex_http_redirect_right/.style={annex_http_request,-latex[bend],bend left=90,distance=10},
+    annex_http_redirect_left/.style={annex_http_request,-latex[bend],bend right=90,distance=10},
     annex_xhr_request/.style={-Latex,line,draw=blue},
     annex_xhr_response/.style={-Latex[open],line,draw=blue},
     annex_websocket/.style={-Latex,draw=red},
