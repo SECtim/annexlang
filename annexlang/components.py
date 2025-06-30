@@ -462,7 +462,9 @@ class Comment(ProtocolStep):
     
     @property
     def height(self):
-        return "3ex", "center,yshift=-1ex"
+        if not hasattr(self, 'text_below'):
+            self.text_below = str(self.label)
+        return f"{len(self.lines_below)}\\baselineskip+1ex", f"center,yshift=-{len(self.lines_below)/2}\\baselineskip"
     
     @property
     def affected_parties(self):
