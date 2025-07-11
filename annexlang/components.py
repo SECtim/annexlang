@@ -225,11 +225,11 @@ class MultiStep(ProtocolStep):
 
         fit_string = "fit=" + ''.join(f'({x})' for x in self.affecting_nodes)
         gid = self.annexid
-        out = fr"""\node[annex_condensed_box,{fit_string}]({gid}) {{}}; """
+        out = fr"""\node[annex_condensed_box,{fit_string}{self.tikz_extra_style}]({gid}) {{}}; """
         out += fr"\node[] at ({gid}.{self.condense}) {{{self.tex_id}}};"
         if hasattr(self, "label"):
             label_pos = getattr(self, "label_pos", "north east")
-            out += fr"\node[annex_multistep_caption_text,anchor={label_pos}] at ({gid}.{label_pos}) {{{self.contour(self.label)}}};"
+            out += fr"\node[annex_multistep_caption_text,anchor={label_pos}{self.tikz_label_style}] at ({gid}.{label_pos}) {{{self.contour(self.label)}}};"
         return out
         
     def walk(self):
@@ -245,6 +245,12 @@ class MultiStep(ProtocolStep):
     @property
     def affecting_nodes(self):
         return chain(*(step.affecting_nodes for step in self.steps))
+
+    @cached_property
+    def tikz_label_style(self):
+        if self.label_style:
+            return f",{self.label_style}"
+        return ""
             
 
 class Parallel(MultiStep):
