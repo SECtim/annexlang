@@ -203,6 +203,7 @@ class ProtocolStep(ProtocolObject):
 class MultiStep(ProtocolStep):
     skip_number = True
     condense = False
+    label_style = None
 
     def draw(self):
         for d in self.steps:
