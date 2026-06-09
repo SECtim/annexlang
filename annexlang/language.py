@@ -60,7 +60,7 @@ class GenericMessage(ProtocolStep):
         if hasattr(self, 'num_lines_below'):
             below = fr"{getattr(self, 'num_lines_below'):.2f}\baselineskip"
         # Height of arrow + spacing around the arrow
-        spacing = '2.6pt'  # with "Latex" arrow heads, this allows for just enough space to include the arrow head
+        spacing = self.above_distance
 
         has_text_above = len(self.tikz_above) > 0  # We don't want to repeat the logic for, e.g., drawing step counters (or not)
         has_text_below = len(self.tikz_below) > 0

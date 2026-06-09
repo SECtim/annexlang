@@ -66,6 +66,7 @@ class ProtocolStep(ProtocolObject):
     style = ""
     note_style = ""
     counter = None  # manually set number of this protocol step, if any
+    above_distance = r"0.4\baselineskip"
     
     def length(self):
         return 1
@@ -113,7 +114,7 @@ class ProtocolStep(ProtocolObject):
         if not self.text_above and (not getattr(self, 'id_above', True) or not self.tex_id):
             return ""
         else:
-            above = '2.6pt'
+            above = self.above_distance
             if hasattr(self, 'num_lines_above'):
                 above += fr"+{0.5*(getattr(self, 'num_lines_above')-1):.2f}\baselineskip"
             return r"""node [%s,above=%s,anchor=base,pin={[pin distance=-8pt,pin edge={draw=none},annex_debug]90:%s}](%s){%s%s}""" % (

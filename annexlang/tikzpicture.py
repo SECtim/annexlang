@@ -17,7 +17,7 @@ class TikzPicture:
         if 'fontsize' in self.options:
             return self.options['fontsize']
         for style in self.options['styles']:
-            style.get_style()  # To populare placeholders
+            style.get_style()  # To populate placeholders
             if 'default_font_size' in style.placeholders:
                 return style.placeholders['default_font_size']
         print("WARNING: No 'fontsize' in options and no style with 'default_font_size'. Using default '\\tiny'.")
