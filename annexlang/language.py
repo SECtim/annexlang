@@ -337,8 +337,6 @@ class ScriptAction(Action):
     @property
     def affected_parties(self):
         yield self.party
-        yield self.src
-        yield self.dest
 
 class TriggerMessage(ProtocolStep):
     yaml_tag = '!trigger'
